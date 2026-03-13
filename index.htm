@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simple Todo List</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="container-task">
+      <header>
+        <div class="header-task">
+          <h1 class="title">
+            <span>My Todo List</span>
+          </h1>
+        </div>
+      </header>
+
+      <main class="main-task">
+        <section>
+          <input type="text" id="addtask" placeholder="Add a new task" />
+          <button type="button" class="btn save-task">Add</button>
+          <span class="errorMessage">You should enter a task</span>
+        </section>
+
+        <section class="tasks-section">
+          <ul class="task-list">
+          </ul>
+        </section>
+      </main>
+
+      <footer class="task-by-state">
+        <button class="btn" id="btn-all">All</button>
+        <button class="btn" id="btn-active">Active</button>
+        <button class="btn" id="btn-completed">Completed</button>
+      </footer>
+    </div>
+  </body>
+  <script type="text/javascript" src="main.js"></script>
+</html>

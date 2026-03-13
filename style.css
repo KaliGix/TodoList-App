@@ -1,0 +1,39 @@
+body
+{
+    margin: 0;
+    background-color: #F5F8FE;
+}
+
+.container-task{
+    background-color: #FEFEFE;
+    margin: 0 auto;
+    margin-top: 5%;
+    width: 600px ;
+    height: 700px;
+    padding: 20px
+}
+
+.errorMessage{
+    display: none;
+    color: red;
+}
+
+.task-list{
+    list-style: none;
+}
+
+.delete{
+    background-color: #E12F2F;
+    color: white;
+    border-radius: 5px;
+    height: 19px;
+    text-align: center;
+    display: none;
+}
+
+.task-item:hover{
+   .delete{
+      display: inline-block;
+
+   }
+}
