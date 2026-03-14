@@ -5,17 +5,20 @@ const btnActiveTask = document.querySelector("#btn-active");
 const btnCompleted = document.querySelector("#btn-completed");
 const errorMessage = document.querySelector(".errorMessage");
 const taskList = document.querySelector(".task-list");
-const checkboxList = document.querySelectorAll(".checkbox-item");
+let taskId = 0;
 
-checkboxList.forEach(element=>{
-    element.addEventListener('change', completedTask);
+taskList.addEventListener("change", function(event) {
+
+  if (event.target.classList.contains("checkbox-item")) {
+    completedTask(event);
+  }
+
 });
 
-console.log(checkboxList.length);
-
 btnSaveTask.addEventListener("click", addTask);
+
 renderTask();
-const task = [];
+const taskArray = [{name: "", age: 20}];
 
 function addTask() {
   try {
@@ -25,23 +28,33 @@ function addTask() {
         name: addTaskInput.value.trim(),
         completed: false,
       };
-
-      //add the new object to the existing array
-      task.push(newTask);
-      saveTaskLocal(newTask);
-      return;
+     
+  
+      if(saveTaskLocalStorage(newTask)){
+          //add the new object to the existing array
+        task.push(newTask);
+        taskId = newTask.id;
+        errorMessageVisibility("none");
+      }
+      
+      return 1;
     }
-    errorMessage.style.display = "block";
+    errorMessageVisibility("block");
   } catch (message) {
     console.log(message);
   }
+
+  return 0;
 }
 
+function errorMessageVisibility(visibility){
+  errorMessage.style.display = visibility;
+}
 
-function saveTaskLocal(newTask){
+function saveTaskLocalStorage(newTask){
 
       //get the localstorage data before adding the new object
-      let savedTask = JSON.parse(localStorage.getItem("task"));
+      let savedTask = JSON.parse(localStorage.getItem("task")) || [];
       savedTask.push(newTask); // the new object is added to the array saveTask
 
       //localstorage save the date it had before and the new one, so
@@ -51,9 +64,12 @@ function saveTaskLocal(newTask){
       if (savedTask !== undefined) {
         console.log("save successfully");
         clearInputTaks();
-        renderTask();
+        renderTask(newTask.id);
+        return true;
        
-      } else console.log("it was not saved");
+      } 
+       console.log("it was not saved");
+       return false;
      
 }
 function clearInputTaks() {
@@ -62,17 +78,40 @@ function clearInputTaks() {
 
 function deleteTask() {}
 
-function completedTask(event){
+function completedTask(taskSelected){
         
+      const getAllTask = JSON.parse(localStorage.getItem("task"));
+      let li = taskSelected.target.closest("li");
+      let id = li.dataset.id; 
+      
+      const updateTask = getAllTask.find(task => task.id == id);
+
+      if(updateTask)
+         updateTask.completed = true;
+ 
+      localStorage.setItem("task", JSON.stringify(getAllTask));
+      renderTask();
+      console.log(localStorage.getItem("task"));
 }
+
+function hideTaskUI(){
+  taskSelected.target.closest('li').style.display = "none";
+}
+
 function renderTask() {
   const tasks = JSON.parse(localStorage.getItem("task"));
-
+   
   taskList.innerHTML ="";
+  
+  if(tasks!= null){
   tasks.forEach((task) => {
-    taskList.innerHTML += `<li class="task-item"><label for="task-item">
+    taskList.innerHTML += `<li class="task-item" data-id= ${task.id}><label for="task-item">
      <input type="checkbox" class="checkbox-item">
         ${task.name}    
         <button type="button" class="btn delete">x</button></label></li>`;
+
   });
+
+  
+}
 }
