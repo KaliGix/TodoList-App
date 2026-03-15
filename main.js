@@ -11,13 +11,12 @@ taskList.addEventListener("change", function(event) {
   if (event.target.classList.contains("checkbox-item")) {
     completedTask(event);
   }
-
 });
 
 btnSaveTask.addEventListener("click", addTask);
 
 renderTask();
-const taskArray = [{name: "", age: 20}];
+const taskArray = [];
 
 function addTask() {
   try {
