@@ -5,7 +5,6 @@ const btnActiveTask = document.querySelector("#btn-active");
 const btnCompleted = document.querySelector("#btn-completed");
 const errorMessage = document.querySelector(".errorMessage");
 const taskList = document.querySelector(".task-list");
-let taskId = 0;
 
 taskList.addEventListener("change", function(event) {
 
