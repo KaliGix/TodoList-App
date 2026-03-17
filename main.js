@@ -8,16 +8,33 @@ const taskList = document.querySelector(".task-list");
 
 taskList.addEventListener("change", function (event) {
   if (event.target.classList.contains("checkbox-item")) {
-    completedTask(event);
+    checkTask(event);
   }
 });
 
-btnSaveTask.addEventListener("click", addTask);
+taskList.addEventListener("click", function (event) {
+  if (event.target.classList.contains("delete"))
+     deleteTask(event);
+});
 
-renderTask();
-const taskArray = [];
+btnAllTask.addEventListener('click', function(event){
+  renderTask(0);
+});
 
-function addTask() {
+btnActiveTask.addEventListener('click', function(event){
+  renderTask(1);
+});
+
+btnCompleted.addEventListener('click', function(){
+  renderTask(2);
+});
+
+btnSaveTask.addEventListener("click", createTask);
+
+renderTask(0);
+const task = [];
+
+function createTask() {
   try {
     if (addTaskInput.value.trim() !== "") {
       const newTask = {
@@ -26,7 +43,7 @@ function addTask() {
         completed: false,
       };
 
-      if (saveTaskLocalStorage(newTask)) {
+      if (saveTask(newTask)) {
         //add the new object to the existing array
         task.push(newTask);
         taskId = newTask.id;
@@ -47,19 +64,19 @@ function errorMessageVisibility(visibility) {
   errorMessage.style.display = visibility;
 }
 
-function saveTaskLocalStorage(newTask) {
+function saveTask(newTask) {
   //get the localstorage data before adding the new object
-  let savedTask = JSON.parse(localStorage.getItem("task")) || [];
+  let savedTask = JSON.parse(localStorage.getItem("tasks")) || [];
   savedTask.push(newTask); // the new object is added to the array saveTask
 
   //localstorage save the date it had before and the new one, so
   //that create a list
-  localStorage.setItem("task", JSON.stringify(savedTask));
+  localStorage.setItem("tasks", JSON.stringify(savedTask));
 
   if (savedTask !== undefined) {
     console.log("save successfully");
     clearInputTaks();
-    renderTask(newTask.id);
+    renderTask(0);
     return true;
   }
   console.log("it was not saved");
@@ -69,37 +86,74 @@ function clearInputTaks() {
   addTaskInput.value = "";
 }
 
-function deleteTask() {}
+function deleteTask(event) {
+  let itemList = event.target.closest("li");
+  let taskIdToDelete = itemList.dataset.id;
 
-function completedTask(taskSelected) {
-  const getAllTask = JSON.parse(localStorage.getItem("task"));
-  let li = taskSelected.target.closest("li");
-  let id = li.dataset.id;
+  let tasksSaved = JSON.parse(localStorage.getItem("tasks")) || [];
+  tasksSaved = tasksSaved.filter((task) => task.id != taskIdToDelete);
+
+  localStorage.setItem("tasks", JSON.stringify(tasksSaved));
+  renderTask(0);
+}
+
+function checkTask(taskSelected) {
+  const getAllTask = JSON.parse(localStorage.getItem("tasks"));
+  let itemList = taskSelected.target.closest("li");
+  let id = itemList.dataset.id;
 
   const updateTask = getAllTask.find((task) => task.id == id);
 
-  if (updateTask) 
-      updateTask.completed = true;
+  if (updateTask) {
+    updateTask.completed = true;
+    console.log(updateTask);
+  }
 
-  localStorage.setItem("task", JSON.stringify(getAllTask));
-  renderTask();
+  localStorage.setItem("tasks", JSON.stringify(getAllTask));
+  renderTask(0);
 }
 
 function hideTaskUI() {
   taskSelected.target.closest("li").style.display = "none";
 }
 
-function renderTask() {
-  const tasks = JSON.parse(localStorage.getItem("task"));
-
+function renderTask(identifier) {
+  const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
   taskList.innerHTML = "";
 
-  if (tasks != null) {
-    tasks.forEach((task) => {
-      taskList.innerHTML += `<li class="task-item" data-id= ${task.id}><label for="task-item">
+  switch (identifier) {
+    case 0:
+      tasks.forEach((task) => {
+        taskList.innerHTML += `<li class="task-item" data-id= ${task.id}><label for="task-item">
      <input type="checkbox" class="checkbox-item">
         ${task.name}    
         <button type="button" class="btn delete">x</button></label></li>`;
-    });
+      });
+
+      break;
+
+    case 1:
+      tasks.forEach((task) => {
+        if (!task.completed)
+          taskList.innerHTML += `<li class="task-item" data-id= ${task.id}><label for="task-item">
+     <input type="checkbox" class="checkbox-item">
+        ${task.name}    
+        <button type="button" class="btn delete">x</button></label></li>`;
+      });
+
+      console.log("active tasks")
+      break;
+
+    case 2:
+      tasks.forEach((task) => {
+        if (task.completed)
+          taskList.innerHTML += `<li class="task-item" data-id= ${task.id}><label for="task-item">
+     <input type="checkbox" class="checkbox-item" checked>
+        ${task.name}    
+        <button type="button" class="btn delete">x</button></label></li>`;
+      });
+
+      console.log("completed tasks");
+      break;
   }
 }
