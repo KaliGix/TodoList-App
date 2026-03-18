@@ -18,20 +18,20 @@ taskList.addEventListener("click", function (event) {
 });
 
 btnAllTask.addEventListener('click', function(event){
-  renderTask(0);
+  renderTask();
 });
 
 btnActiveTask.addEventListener('click', function(event){
-  renderTask(1);
+  renderTask();
 });
 
 btnCompleted.addEventListener('click', function(){
-  renderTask(2);
+  renderTask();
 });
 
 btnSaveTask.addEventListener("click", createTask);
 
-renderTask(0);
+renderTask();
 const task = [];
 
 function createTask() {
@@ -76,7 +76,7 @@ function saveTask(newTask) {
   if (savedTask !== undefined) {
     console.log("save successfully");
     clearInputTaks();
-    renderTask(0);
+    renderTask();
     return true;
   }
   console.log("it was not saved");
@@ -94,7 +94,7 @@ function deleteTask(event) {
   tasksSaved = tasksSaved.filter((task) => task.id != taskIdToDelete);
 
   localStorage.setItem("tasks", JSON.stringify(tasksSaved));
-  renderTask(0);
+  itemList.remove();
 }
 
 function checkTask(taskSelected) {
@@ -110,50 +110,23 @@ function checkTask(taskSelected) {
   }
 
   localStorage.setItem("tasks", JSON.stringify(getAllTask));
-  renderTask(0);
+  renderTask();
 }
 
 function hideTaskUI() {
   taskSelected.target.closest("li").style.display = "none";
 }
 
-function renderTask(identifier) {
+function renderTask() {
   const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
   taskList.innerHTML = "";
 
-  switch (identifier) {
-    case 0:
+  if(tasks !==null)
       tasks.forEach((task) => {
         taskList.innerHTML += `<li class="task-item" data-id= ${task.id}><label for="task-item">
-     <input type="checkbox" class="checkbox-item">
+     ${task.completed ? `<input type="checkbox" class="checkbox-item" checked>`: `<input type="checkbox" class="checkbox-item">` }
         ${task.name}    
         <button type="button" class="btn delete">x</button></label></li>`;
       });
-
-      break;
-
-    case 1:
-      tasks.forEach((task) => {
-        if (!task.completed)
-          taskList.innerHTML += `<li class="task-item" data-id= ${task.id}><label for="task-item">
-     <input type="checkbox" class="checkbox-item">
-        ${task.name}    
-        <button type="button" class="btn delete">x</button></label></li>`;
-      });
-
-      console.log("active tasks")
-      break;
-
-    case 2:
-      tasks.forEach((task) => {
-        if (task.completed)
-          taskList.innerHTML += `<li class="task-item" data-id= ${task.id}><label for="task-item">
-     <input type="checkbox" class="checkbox-item" checked>
-        ${task.name}    
-        <button type="button" class="btn delete">x</button></label></li>`;
-      });
-
-      console.log("completed tasks");
-      break;
-  }
+    
 }
