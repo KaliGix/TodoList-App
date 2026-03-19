@@ -81,11 +81,15 @@ input[type="checkbox"] {
      display: grid;
      grid-template-columns: repeat(3,1fr);
      gap: 10px;
-
+     
 }
 
 .filter-buttons button:hover {
-  background-color: #e4e7ec;
+  /* background-color: #e4e7ec; */
+  color: #6885CD;
+  border-color: #6885CD;
+  box-shadow: 0px 0px 5px 1px #6885CD;
+  border-style:hidden;
 }
 
 .filter-buttons button.active {
@@ -102,8 +106,8 @@ input[type="checkbox"] {
     /* border-color: transparent; */
     font-size: 25px;
     background-color: #FEFEFF;
-    border-color: #EBECF7;
-    color: #B9BDCB;
+    border-color: #D9DCEF;
+    color: #686B88;
     border-style:ridge;
 }
 
