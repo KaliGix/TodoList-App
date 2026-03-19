@@ -44,7 +44,6 @@ body
     font-size: 34px;
     text-align:center;
     font-weight: 500;
-   
     box-sizing: border-box;
     
 }
@@ -52,7 +51,7 @@ body
 .input-container .save-task{ 
   position: absolute;
   right: 20px;
-  top: 37%;
+  top: 55%;
   transform: translateY(-50%);
   height: 60px;
   width: 90px;
