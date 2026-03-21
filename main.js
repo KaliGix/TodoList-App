@@ -5,7 +5,13 @@ const btnActiveTask = document.querySelector("#btn-active");
 const btnCompleted = document.querySelector("#btn-completed");
 const errorMessage = document.querySelector(".errorMessage");
 const taskList = document.querySelector(".task-list");
+const showDialog = document.getElementById("modal");
+const closeDialog = document.querySelector(".close-dialog");
 let currentFilter = "all";
+
+closeDialog.addEventListener("click", function (event) {
+  showDialog.close();
+});
 
 taskList.addEventListener("change", function (event) {
   if (event.target.classList.contains("checkbox-item")) {
@@ -81,19 +87,28 @@ function saveTask(newTask) {
   localStorage.setItem("tasks", JSON.stringify(savedTask));
 
   if (savedTask !== undefined) {
-    console.log("save successfully");
+    setMessageUI(true);
     clearInputTaks();
     addItemToList(newTask[newTask.length - 1]);
     return true;
   }
-  console.log("it was not saved");
+  setMessageUI(false);
   return false;
+}
+
+function setMessageUI(success) {
+  const message = document.querySelector("p");
+
+  if (success) message.textContent = "The task was saved successfully!";
+  else
+    message.textContent =
+      "Unfortunatelly, the task was not saved due to an error.";
+  showDialog.showModal();
 }
 
 function addItemToList(newTask) {
   var { id: identifier, name: taskName, completed: state } = newTask;
 
-  
   taskList.innerHTML += `
     <li class="task-item" data-id="${identifier}">
         <label>
@@ -104,10 +119,9 @@ function addItemToList(newTask) {
     </li>
 `;
 
-if(currentFilter==="completed"){
-   var lastItem = taskList?.lastElementChild;
-   lastItem.style.display = "none";
-      
+  if (currentFilter === "completed") {
+    var lastItem = taskList?.lastElementChild;
+    lastItem.style.display = "none";
   }
 }
 
@@ -123,7 +137,6 @@ function deleteTask(event) {
   tasksSaved = tasksSaved.filter((task) => task.id != taskIdToDelete);
 
   localStorage.setItem("tasks", JSON.stringify(tasksSaved));
-  console.log("calling remove function...");
   itemList.remove(itemList);
 }
 
@@ -138,11 +151,9 @@ function updateTask(event) {
   if (selectedTask) selectedTask.completed = checkboxState;
 
   localStorage.setItem("tasks", JSON.stringify(allTask));
-
 }
 
 function renderTask() {
-
   const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
   let showTasks = tasks;
   taskList.innerHTML = "";
