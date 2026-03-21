@@ -5,13 +5,12 @@ const btnActiveTask = document.querySelector("#btn-active");
 const btnCompleted = document.querySelector("#btn-completed");
 const errorMessage = document.querySelector(".errorMessage");
 const taskList = document.querySelector(".task-list");
-const showDialog = document.getElementById("modal");
-const closeDialog = document.querySelector(".close-dialog");
+const dialog = document.querySelector(".modal-overlay");
+const linkForm = document.querySelectorAll(".task-item");
+
+
 let currentFilter = "all";
 
-closeDialog.addEventListener("click", function (event) {
-  showDialog.close();
-});
 
 taskList.addEventListener("change", function (event) {
   if (event.target.classList.contains("checkbox-item")) {
@@ -59,12 +58,12 @@ function createTask() {
       task.push(newTask);
 
       if (saveTask(task)) {
-        errorMessageVisibility("none");
+        errorMessageView("none");
       }
 
       return 1;
     }
-    errorMessageVisibility("block");
+    errorMessageView("block");
   } catch (message) {
     console.log(message);
   }
@@ -72,8 +71,11 @@ function createTask() {
   return 0;
 }
 
-function errorMessageVisibility(visibility) {
+function errorMessageView(visibility) {
   errorMessage.style.display = visibility;
+  addTaskInput.classList.remove("empty-field");
+
+  if (visibility === "block") addTaskInput.classList.add("empty-field");
 }
 
 function saveTask(newTask) {
@@ -97,13 +99,13 @@ function saveTask(newTask) {
 }
 
 function setMessageUI(success) {
-  const message = document.querySelector("p");
+  const message = document.querySelector(".message");
 
   if (success) message.textContent = "The task was saved successfully!";
   else
     message.textContent =
       "Unfortunatelly, the task was not saved due to an error.";
-  showDialog.showModal();
+
 }
 
 function addItemToList(newTask) {
@@ -115,8 +117,7 @@ function addItemToList(newTask) {
             <input type="checkbox" class="checkbox-item">
             ${taskName}
         </label>
-        <button type="button" class="btn delete">delete</button>
-    </li>
+    </li> 
 `;
 
   if (currentFilter === "completed") {
@@ -170,7 +171,7 @@ function renderTask() {
      ${task.completed ? `<input type="checkbox" class="checkbox-item" checked>` : `<input type="checkbox" class="checkbox-item">`}
         ${task.name}   
     </label> 
-        <button type="button" class="btn delete">Delete</button></li>`;
+        </li>`;
   });
 }
 
