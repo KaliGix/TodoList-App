@@ -9,7 +9,7 @@ let currentFilter = "all";
 
 taskList.addEventListener("change", function (event) {
   if (event.target.classList.contains("checkbox-item")) {
-    checkTask(event);
+    updateTask(event);
   }
 });
 
@@ -50,10 +50,9 @@ function createTask() {
         completed: false,
       };
 
-      if (saveTask(newTask)) {
-        //add the new object to the existing array
-        task.push(newTask);
-        taskId = newTask.id;
+      task.push(newTask);
+
+      if (saveTask(task)) {
         errorMessageVisibility("none");
       }
 
@@ -74,8 +73,9 @@ function errorMessageVisibility(visibility) {
 function saveTask(newTask) {
   //get the localstorage data before adding the new object
   let savedTask = JSON.parse(localStorage.getItem("tasks")) || [];
-  savedTask.push(newTask); // the new object is added to the array saveTask
+  savedTask.push(newTask[newTask.length - 1]);
 
+  // the new object is added to the array saveTask
   //localstorage save the date it had before and the new one, so
   //that create a list
   localStorage.setItem("tasks", JSON.stringify(savedTask));
@@ -83,7 +83,7 @@ function saveTask(newTask) {
   if (savedTask !== undefined) {
     console.log("save successfully");
     clearInputTaks();
-    addItemToList(newTask);
+    addItemToList(newTask[newTask.length - 1]);
     return true;
   }
   console.log("it was not saved");
@@ -93,9 +93,22 @@ function saveTask(newTask) {
 function addItemToList(newTask) {
   var { id: identifier, name: taskName, completed: state } = newTask;
 
-  taskList.innerHTML += `<li class="task-item" data-id= ${identifier}><label for="task-item">
-        <input type="checkbox" class="checkbox-item">
-        ${taskName}<button type="button" class="btn delete">x</button></label></li>`;
+  
+  taskList.innerHTML += `
+    <li class="task-item" data-id="${identifier}">
+        <label>
+            <input type="checkbox" class="checkbox-item">
+            ${taskName}
+        </label>
+        <button type="button" class="btn delete">delete</button>
+    </li>
+`;
+
+if(currentFilter==="completed"){
+   var lastItem = taskList?.lastElementChild;
+   lastItem.style.display = "none";
+      
+  }
 }
 
 function clearInputTaks() {
@@ -110,52 +123,52 @@ function deleteTask(event) {
   tasksSaved = tasksSaved.filter((task) => task.id != taskIdToDelete);
 
   localStorage.setItem("tasks", JSON.stringify(tasksSaved));
-  console.log("calling remove function...")
+  console.log("calling remove function...");
   itemList.remove(itemList);
 }
 
-function checkTask(taskSelected) {
-  const getAllTask = JSON.parse(localStorage.getItem("tasks"));
-  let itemList = taskSelected.target.closest("li");
+function updateTask(event) {
+  const allTask = JSON.parse(localStorage.getItem("tasks"));
+  let itemList = event.target.closest("li");
   let id = itemList.dataset.id;
+  let checkboxState = event.target.checked;
 
-  const updateTask = getAllTask.find((task) => task.id == id);
+  const selectedTask = allTask.find((task) => task.id == id);
 
-  if (updateTask) {
-    updateTask.completed = true;
-    console.log(updateTask);
-  }
+  if (selectedTask) selectedTask.completed = checkboxState;
 
-  localStorage.setItem("tasks", JSON.stringify(getAllTask));
-  renderTask();
+  localStorage.setItem("tasks", JSON.stringify(allTask));
+
 }
 
 function renderTask() {
+
   const tasks = JSON.parse(localStorage.getItem("tasks")) || [];
   let showTasks = tasks;
   taskList.innerHTML = "";
 
-  
-    if(currentFilter ==="active")
-       showTasks = tasks.filter(task => !task.completed);
+  if (currentFilter === "active")
+    showTasks = tasks.filter((task) => !task.completed);
 
-    if(currentFilter === "completed")
-      showTasks = tasks.filter(task => task.completed);
+  if (currentFilter === "completed")
+    showTasks = tasks.filter((task) => task.completed);
 
-    showTasks.forEach((task) => {
-      taskList.innerHTML += `<li class="task-item" data-id= ${task.id}><label for="task-item">
+  showTasks.forEach((task) => {
+    taskList.innerHTML += `<li class="task-item" data-id= ${task.id}>
+    <label>
      ${task.completed ? `<input type="checkbox" class="checkbox-item" checked>` : `<input type="checkbox" class="checkbox-item">`}
-        ${task.name}    
-        <button type="button" class="btn delete">Delete</button></label></li>`;
-    });
+        ${task.name}   
+    </label> 
+        <button type="button" class="btn delete">Delete</button></li>`;
+  });
 }
 
-function updateActiveButton(){
-  [btnAllTask, btnActiveTask, btnCompleted].forEach(btn=>{
+function updateActiveButton() {
+  [btnAllTask, btnActiveTask, btnCompleted].forEach((btn) => {
     btn.classList.remove("active");
   });
 
-  if(currentFilter==="all") btnAllTask.classList.add("active");
-  if(currentFilter==="active") btnActiveTask.classList.add("active");
-  if(currentFilter==="completed") btnCompleted.classList.add("active");
+  if (currentFilter === "all") btnAllTask.classList.add("active");
+  if (currentFilter === "active") btnActiveTask.classList.add("active");
+  if (currentFilter === "completed") btnCompleted.classList.add("active");
 }
