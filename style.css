@@ -2,6 +2,11 @@ body
 {
     margin: 0;
     background-color: #ced5e2;
+    background-image: url("/resources/BackGroundProject.jpg");
+    background-repeat:no-repeat;
+   background-position: center center;
+   background-attachment: fixed;
+   background-size: cover;
 }
 
 .container-task{
