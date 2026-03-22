@@ -8,15 +8,13 @@
   </head>
 
   <body>
-    
-
-    <div class="modal-overlay" style="display: none;">
-      <div id="modal"  >
-        <img src="/resources/checkIcon.png" alt="this is an image">
+    <div class="modal-overlay" style="display: none">
+      <div id="modal">
+        <img src="/resources/checkIcon.png" alt="this is an image" />
         <span>Success!</span>
         <p class="message">You have successfully saved a new task</p>
       </div>
-    </div>  
+    </div>
 
     <div class="card">
       <header class="header-task">
@@ -25,9 +23,17 @@
 
       <main class="main-task">
         <section class="input-container">
-          <input type="text" id="addtask" placeholder="Add a new task..." autocomplete="off"/>
-          <img src="/resources/add.png" class="save-task">
-          <span class="errorMessage">You should enter a task</span>
+          <input
+            type="text"
+            id="addtask"
+            placeholder="Add a new task..."
+            autocomplete="off"
+          />
+          <img src="/resources/add.png" class="save-task" />
+        </section>
+        <section class="errorMessage">
+          <span>You should enter a task</span>
+          <img src="/resources/error.png" class="error-icon">
         </section>
 
         <section class="tasks-section">
@@ -41,7 +47,6 @@
         <button class="btn" id="btn-completed">Completed</button>
       </footer>
     </div>
-
   </body>
   <script type="text/javascript" src="main.js"></script>
 </html>

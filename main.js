@@ -14,8 +14,13 @@ taskList.addEventListener("change", function (event) {
   if (event.target.classList.contains("checkbox-item")) {
     updateTask(event);
   }
-  if (event.target.classList.contains("delete")) deleteTask(event);
 });
+
+
+taskList.addEventListener('click', (event)=>{
+   if (event.target.classList.contains("container-delete") || event.target.classList.contains("delete")) 
+       deleteTask(event);
+})
 
 btnAllTask.addEventListener("click", function (event) {
   currentFilter = "all";
@@ -78,9 +83,7 @@ function saveTask(newTask) {
   let savedTask = JSON.parse(localStorage.getItem("tasks")) || [];
   savedTask.push(newTask[newTask.length - 1]);
 
-  // the new object is added to the array saveTask
-  //localstorage save the date it had before and the new one, so
-  //that create a list
+  
   localStorage.setItem("tasks", JSON.stringify(savedTask));
 
   if (savedTask !== undefined) {
@@ -128,6 +131,7 @@ function clearInputTaks() {
 }
 
 function deleteTask(event) {
+
   let itemList = event.target.closest("li");
   let taskIdToDelete = itemList.dataset.id;
 
@@ -139,6 +143,7 @@ function deleteTask(event) {
 }
 
 function updateTask(event) {
+
   const allTask = JSON.parse(localStorage.getItem("tasks"));
   let itemList = event.target.closest("li");
   let id = itemList.dataset.id;
@@ -149,6 +154,14 @@ function updateTask(event) {
   if (selectedTask) selectedTask.completed = checkboxState;
 
   localStorage.setItem("tasks", JSON.stringify(allTask));
+
+  hideItem(itemList);
+}
+
+function hideItem(item){
+
+  if(currentFilter ==="completed" || currentFilter==="active")
+     item.style.display = "none";
 }
 
 function renderTask() {

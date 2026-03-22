@@ -27,10 +27,8 @@ a {
   margin: 0 auto;
   width: 1300px;
   padding: 20px;
-  /* box-shadow : 0px 1px 15px 2px rgb(201, 178, 178); */
   border-radius: 18px;
   border-style: none;
-  /* box-shadow: offset-x offset-y blur-radius spread-radius color; */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -57,13 +55,12 @@ a {
 .input-container input {
   padding-right: 100px;
   border-radius: 35px;
-  /* border-color: #8186a0; */
   border-style: solid;
-  /* background-color: #dfe1e9 ; */
+ 
   width: 100%;
   height: 100px;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-size: 34px;
+  font-size: 45px;
   text-align: center;
   font-weight: 500;
   box-sizing: border-box;
@@ -95,13 +92,12 @@ input::placeholder {
   font-size: 35px;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
   border: none;
-  /* border-radius: 70px; */
   border-style: none;
   cursor: pointer;
   background-color: transparent;
   color: white;
   margin-top: 0;
-  /* box-shadow: 1px 1px 10px 1px #AA16F1; */
+
 }
 
 input[type="checkbox"] {
@@ -132,7 +128,6 @@ input[type="checkbox"]:checked{
 }
 
 .filter-buttons button:hover {
-  /* background-color: #e4e7ec; */
   background-color: #6E00FF;
   border-color: #6E00FF;
   color: #fefefe;
@@ -164,16 +159,30 @@ input[type="checkbox"]:checked{
 
 .errorMessage {
   display: none;
-  color: #e61212;
-  font-family: Verdana, Geneva, Tahoma, sans-serif;
-  font-size: 40px;
-  width: 90%;
-  height: 35px;
+  width: 50%;
+  height: 50px;
   text-align: center;
   margin: 0 auto;
-  margin-top: 15px;
   transition-duration: 2.6s;
   transition-property: all;
+}
+
+.errorMessage span{
+  color: #FFF;
+  border-radius: 10px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 30px;;
+  border-radius: 10px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 30px;FF;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-size: 35px;
+  width: 90%;
+}
+
+.error-icon{
+  width: 10%;
+  height: 60px;
 }
 
 .empty-field {
