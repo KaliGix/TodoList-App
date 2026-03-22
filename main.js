@@ -8,17 +8,12 @@ const taskList = document.querySelector(".task-list");
 const dialog = document.querySelector(".modal-overlay");
 const linkForm = document.querySelectorAll(".task-item");
 
-
 let currentFilter = "all";
-
 
 taskList.addEventListener("change", function (event) {
   if (event.target.classList.contains("checkbox-item")) {
     updateTask(event);
   }
-});
-
-taskList.addEventListener("click", function (event) {
   if (event.target.classList.contains("delete")) deleteTask(event);
 });
 
@@ -105,7 +100,6 @@ function setMessageUI(success) {
   else
     message.textContent =
       "Unfortunatelly, the task was not saved due to an error.";
-
 }
 
 function addItemToList(newTask) {
