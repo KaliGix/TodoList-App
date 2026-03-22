@@ -107,10 +107,13 @@ function addItemToList(newTask) {
 
   taskList.innerHTML += `
     <li class="task-item" data-id="${identifier}">
-        <label>
+       <label for="checkbox-item" class="task-name">
             <input type="checkbox" class="checkbox-item">
             ${taskName}
         </label>
+        <div class="container-delete">
+            <img src="/resources/trash-can.png" class="delete" />
+        </div>
     </li> 
 `;
 
@@ -161,10 +164,14 @@ function renderTask() {
 
   showTasks.forEach((task) => {
     taskList.innerHTML += `<li class="task-item" data-id= ${task.id}>
-    <label>
+    <label for="checkbox-item" class="task-name">
      ${task.completed ? `<input type="checkbox" class="checkbox-item" checked>` : `<input type="checkbox" class="checkbox-item">`}
         ${task.name}   
     </label> 
+    
+    <div class="container-delete">
+         <img src="/resources/trash-can.png" class="delete" />
+    </div>
         </li>`;
   });
 }
