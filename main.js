@@ -134,7 +134,7 @@ function addItemToList(newTask) {
 
   taskList.innerHTML += `
     <li class="task-item" data-id="${identifier}">
-       <label for="checkbox-item" class="task-name">
+       <label class="task-name">
             <input type="checkbox" class="checkbox-item">
             ${taskName}
         </label>
@@ -166,7 +166,7 @@ function deleteTask(event) {
 
     setMessageUI(3);
     itemList.remove(itemList);
-    
+
   } catch (error) {
     setMessageUI(4);
   }
@@ -210,7 +210,7 @@ function renderTask() {
 
   showTasks.forEach((task) => {
     taskList.innerHTML += `${task.completed ? `<li class="task-item ${"line-through"}" data-id= ${task.id}> ` : `<li class="task-item" data-id= ${task.id}>`}
-    <label for="checkbox-item" class="task-name">
+    <label class="task-name">
      ${task.completed ? `<input type="checkbox" class="checkbox-item" checked>` : `<input type="checkbox" class="checkbox-item">`}
         ${task.name}   
     </label> 
@@ -230,4 +230,6 @@ function updateActiveButton() {
   if (currentFilter === "all") btnAllTask.classList.add("active");
   if (currentFilter === "active") btnActiveTask.classList.add("active");
   if (currentFilter === "completed") btnCompleted.classList.add("active");
+
+  errorMessageView("none");
 }
