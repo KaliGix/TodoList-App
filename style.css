@@ -233,6 +233,10 @@ input[type="checkbox"]:checked{
   transition-property: all;
 }
 
+.line-through{
+  text-decoration: line-through;
+}
+
 .delete {
   background-color: transparent;
   border-radius: 5px;
@@ -286,10 +290,11 @@ img {
   border-radius: 10px;
   width: 500px;
   height: 250px;
-  /* position: fixed; 
-    z-index: 1000;
-    top: 50%;
-    left: 50%;  */
+  position: fixed; 
+  z-index: 1000;
+  top: 50%;
+  left: 50%;
+  margin: -300px; 
   cursor: default;
   box-shadow: 2px 2px 12px 1px #323a4d;
 }
@@ -312,6 +317,8 @@ img {
   align-items: center;
   z-index: 1000;
 }
+
+
 
 #form-task {
   width: 1200px;

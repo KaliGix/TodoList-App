@@ -7,20 +7,12 @@ const errorMessage = document.querySelector(".errorMessage");
 const taskList = document.querySelector(".task-list");
 const dialog = document.querySelector(".modal-overlay");
 const linkForm = document.querySelectorAll(".task-item");
-
+const modal = document.querySelector(".modal-overlay");
+const modalIcon = document.querySelector("#icon-message");
+const modalMessageTitle = document.querySelector("#modal-message-title");
+const urlErrorIcon = "/resources/error.png";
+const urlSuccessIcon = "/resources/checkicon.png";
 let currentFilter = "all";
-
-taskList.addEventListener("change", function (event) {
-  if (event.target.classList.contains("checkbox-item")) {
-    updateTask(event);
-  }
-});
-
-
-taskList.addEventListener('click', (event)=>{
-   if (event.target.classList.contains("container-delete") || event.target.classList.contains("delete")) 
-       deleteTask(event);
-})
 
 btnAllTask.addEventListener("click", function (event) {
   currentFilter = "all";
@@ -42,6 +34,21 @@ btnCompleted.addEventListener("click", function () {
 
 btnSaveTask.addEventListener("click", createTask);
 
+taskList.addEventListener("change", function (event) {
+  if (event.target.classList.contains("checkbox-item")) {
+    updateTask(event);
+  }
+});
+
+taskList.addEventListener("click", (event) => {
+  if (
+    event.target.classList.contains("container-delete") ||
+    event.target.classList.contains("delete")
+  )
+    deleteTask(event);
+});
+
+modal.style.display = "none";
 renderTask();
 updateActiveButton();
 const task = [];
@@ -82,27 +89,44 @@ function saveTask(newTask) {
   //get the localstorage data before adding the new object
   let savedTask = JSON.parse(localStorage.getItem("tasks")) || [];
   savedTask.push(newTask[newTask.length - 1]);
-
-  
   localStorage.setItem("tasks", JSON.stringify(savedTask));
 
   if (savedTask !== undefined) {
-    setMessageUI(true);
+    setMessageUI(1);
     clearInputTaks();
     addItemToList(newTask[newTask.length - 1]);
     return true;
   }
-  setMessageUI(false);
+  setMessageUI(2);
   return false;
 }
 
-function setMessageUI(success) {
+function setMessageUI(option) {
   const message = document.querySelector(".message");
 
-  if (success) message.textContent = "The task was saved successfully!";
-  else
-    message.textContent =
-      "Unfortunatelly, the task was not saved due to an error.";
+  if (option === 1) {
+    message.textContent = "The task was saved successfully!";
+    modalIcon.src = urlSuccessIcon;
+    modalMessageTitle.textContent = "success!";
+  } else if (option === 2) {
+    message.textContent = "the task was not saved due to an error.";
+    modalIcon.src = urlErrorIcon;
+    modalMessageTitle.textContent = "Error";
+  } else if (option === 3) {
+    message.textContent = "Task removed successfully";
+    modalIcon.src = urlSuccessIcon;
+    modalMessageTitle.textContent = "success!";
+  } else if (option === 4) {
+    message.textContent = "there was an error while removing the task";
+    modalIcon.src = urlErrorIcon;
+    modalMessageTitle.textContent = "Error";
+  }
+
+  modal.style.display = "block";
+
+  setTimeout(() => {
+    modal.style.display = "none";
+  }, 3000);
 }
 
 function addItemToList(newTask) {
@@ -131,19 +155,24 @@ function clearInputTaks() {
 }
 
 function deleteTask(event) {
+  try {
+    let itemList = event.target.closest("li");
+    let taskIdToDelete = itemList.dataset.id;
 
-  let itemList = event.target.closest("li");
-  let taskIdToDelete = itemList.dataset.id;
+    let tasksSaved = JSON.parse(localStorage.getItem("tasks")) || [];
+    tasksSaved = tasksSaved.filter((task) => task.id != taskIdToDelete);
 
-  let tasksSaved = JSON.parse(localStorage.getItem("tasks")) || [];
-  tasksSaved = tasksSaved.filter((task) => task.id != taskIdToDelete);
+    localStorage.setItem("tasks", JSON.stringify(tasksSaved));
 
-  localStorage.setItem("tasks", JSON.stringify(tasksSaved));
-  itemList.remove(itemList);
+    setMessageUI(3);
+    itemList.remove(itemList);
+    
+  } catch (error) {
+    setMessageUI(4);
+  }
 }
 
 function updateTask(event) {
-
   const allTask = JSON.parse(localStorage.getItem("tasks"));
   let itemList = event.target.closest("li");
   let id = itemList.dataset.id;
@@ -155,13 +184,17 @@ function updateTask(event) {
 
   localStorage.setItem("tasks", JSON.stringify(allTask));
 
+  lineTroughText(selectedTask.completed, itemList);
   hideItem(itemList);
 }
 
-function hideItem(item){
-
-  if(currentFilter ==="completed" || currentFilter==="active")
-     item.style.display = "none";
+function lineTroughText(checked, item) {
+  if (checked) item.classList.add("line-through");
+  else item.classList.remove("line-through");
+}
+function hideItem(item) {
+  if (currentFilter === "completed" || currentFilter === "active")
+    item.style.display = "none";
 }
 
 function renderTask() {
@@ -176,7 +209,7 @@ function renderTask() {
     showTasks = tasks.filter((task) => task.completed);
 
   showTasks.forEach((task) => {
-    taskList.innerHTML += `<li class="task-item" data-id= ${task.id}>
+    taskList.innerHTML += `${task.completed ? `<li class="task-item ${"line-through"}" data-id= ${task.id}> ` : `<li class="task-item" data-id= ${task.id}>`}
     <label for="checkbox-item" class="task-name">
      ${task.completed ? `<input type="checkbox" class="checkbox-item" checked>` : `<input type="checkbox" class="checkbox-item">`}
         ${task.name}   
