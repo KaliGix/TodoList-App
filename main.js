@@ -10,8 +10,8 @@ const linkForm = document.querySelectorAll(".task-item");
 const modal = document.querySelector(".modal-overlay");
 const modalIcon = document.querySelector("#icon-message");
 const modalMessageTitle = document.querySelector("#modal-message-title");
-const urlErrorIcon = "/resources/error.png";
-const urlSuccessIcon = "/resources/checkicon.png";
+const urlErrorIcon = "resources/error.png";
+const urlSuccessIcon = "resources/checkicon.png";
 let currentFilter = "all";
 
 btnAllTask.addEventListener("click", function (event) {
@@ -139,7 +139,7 @@ function addItemToList(newTask) {
             ${taskName}
         </label>
         <div class="container-delete">
-            <img src="/resources/trash-can.png" class="delete" />
+            <img src="resources/trash-can.png" class="delete" />
         </div>
     </li> 
 `;
@@ -216,7 +216,7 @@ function renderTask() {
     </label> 
     
     <div class="container-delete">
-         <img src="/resources/trash-can.png" class="delete" />
+         <img src="resources/trash-can.png" class="delete" />
     </div>
         </li>`;
   });

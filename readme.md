@@ -74,8 +74,12 @@ This project helped me strengthen the following skills:
 
 ## 📸 Screenshots
 
-*(Add screenshots here if you have them)*
-
+![alt text]({615D1919-56E7-47A7-BEC1-E336C9C015E2}.png)
+![alt text]({2EBF1400-8903-4316-9ABE-10CC435EC57D}.png)
+![alt text]({EC6DF3B2-0836-48BC-8E9E-3EF43AADCB4C}.png)
+![alt text]({134C9B60-CF1D-4E57-8D6D-D67233864C29}.png)
+![alt text]({750D2357-4588-4501-B0CB-80E2444F1DA3}.png)
+![alt text]({522E33C8-61C0-4EDB-92B4-F1C7AAA20164}.png)
 ---
 
 ## 📌 Future Improvements
